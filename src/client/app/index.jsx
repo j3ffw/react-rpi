@@ -89,7 +89,7 @@ class TravelTime extends React.Component {
 
 class App extends React.Component {
   render () {
-    return <div className="container-fluid" > <TravelTime /><Weather /></div>;
+    return <div className="container-fluid" style={{maxWidth: 800 + 'px'}}> <TravelTime /><Weather /></div>;
   }
 };
 
