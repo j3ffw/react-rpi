@@ -1,5 +1,4 @@
 import React from 'react';
-import {google} from 'googleapis'
 import {render} from 'react-dom';
 import { Col } from 'react-bootstrap';
 import { Row } from 'react-bootstrap';
@@ -31,9 +30,8 @@ import { Container } from 'react-bootstrap';
 
     render() {
        return <Row>
-                <Col sm={2}>Temp:{this.state.temp}</Col>
-                <Col sm={2}><img src={this.state.icon} /></Col>
-                <Col sm={2}>Derp</Col>
+                <Col xs={1}><img src={this.state.icon} /></Col>
+                <Col xs={4}>Temp:{this.state.temp}</Col>
               </Row>;
     }
   };
@@ -85,13 +83,13 @@ class TravelTime extends React.Component {
 
 
   render () {
-    return <Row><Col md={4}>Time to home: {this.state.duration} via {this.state.route}</Col></Row>
+    return <Row><Col xs={4}><span className="glyphicon glyphicon-road" aria-hidden="true"></span>{this.state.duration} via {this.state.route}</Col></Row>
   }
 };
 
 class App extends React.Component {
   render () {
-    return <div className="containter-fluid"><TravelTime /><Weather /></div>;
+    return <div className="container-fluid" > <TravelTime /><Weather /></div>;
   }
 };
 
