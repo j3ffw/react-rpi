@@ -8,7 +8,6 @@ import { Container } from 'react-bootstrap';
     constructor(props) {
         super(props);
         this.state = {icon: "http://openweathermap.org/img/w/50d.png", temp: "62F"};
-       // this.getWeather();
     }
 
     requestFinished(data) {
@@ -29,24 +28,48 @@ import { Container } from 'react-bootstrap';
     }
 
     render() {
-       return <Row>
-                <Col xs={1}><img src={this.state.icon} /></Col>
-                <Col xs={4}>Temp:{this.state.temp}</Col>
-              </Row>;
+       return <div className="panel">
+                <div className="panel-heading">
+                  <h6 className="panel-title">San Jose Weather</h6>
+                </div>
+                <div className="panel-body">
+                  <Row>
+                    <Col xs={4}><img src={this.state.icon} /></Col>
+                    <Col xs={4}>Temp:{this.state.temp}</Col>
+                  </Row>
+                  </div>
+              </div>;
     }
+
+    tick() {
+      this.getWeather();
+    }
+
+    componentDidMount() {
+        this.timerID = setInterval(
+          () => this.tick(),
+          60000
+        );
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
+
+
   };
 
 
 class TravelTime extends React.Component {
   constructor(props) {
       super(props);
-      this.state = {duration: "14 min", route: "via 101 S"};
+      this.state = {duration: "Initializing", route: "via initializing"};
       this.directionsService = new google.maps.DirectionsService();
-    //  this.getRoute();
+      this.getRoute();
     }
 
     tick() {
-      
+      this.getRoute()
     }
 
     requestFinished(result, status) {
@@ -73,7 +96,7 @@ class TravelTime extends React.Component {
   componentDidMount() {
       this.timerID = setInterval(
         () => this.tick(),
-        5000
+        60000
       );
   }
 
@@ -83,13 +106,87 @@ class TravelTime extends React.Component {
 
 
   render () {
-    return <Row><Col xs={4}><span className="glyphicon glyphicon-road" aria-hidden="true"></span>{this.state.duration} via {this.state.route}</Col></Row>
+    return   <div className="panel">
+                <div className="panel-heading">
+                  <h6 className="panel-title">Time to Home</h6>
+                </div>
+                <div className="panel-body">
+                  <Row>
+                    <Col xs={8}>{this.state.duration} via {this.state.route}</Col>
+                  </Row>
+                  </div>
+              </div>;
+
+    return <Row></Row>
   }
 };
 
+class Clock extends React.Component {
+ constructor(props) {
+      super(props);
+      this.state = {timeStr: "12:12", dateStr: "Smarch 32"};
+  }
+
+  updateState() {
+      var dateOptions = { weekday: "short", day: "numeric", year:"numeric" };
+      var dateFormat = new Intl.DateTimeFormat('en-US', dateOptions).format;
+
+      var timeOptions = { hour12: true, hour : "numeric", minute: "2-digit", second: "2-digit" };
+      var timeFormat = new Intl.DateTimeFormat('en-US', timeOptions).format;
+
+
+      var date = new Date()
+      var timeString = timeFormat(date)
+      var dateString = dateFormat(date)
+
+      this.setState({timeStr: timeString, dateStr: dateString})
+  }
+
+  render() {
+
+    return <div className="container-fluid">
+              <div className="row">
+                <div className="col-xs-4">
+                  <h1>{this.state.timeStr}</h1>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-xs-8">
+                  <h4>{this.state.dateStr}</h4>
+                </div>
+              </div>
+            </div>;
+   } 
+
+
+  componentDidMount() {
+    this.updateState()
+
+    this.timerID = setInterval(
+      () => this.updateState(),
+      100
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+
+}
+
 class App extends React.Component {
   render () {
-    return <div className="container-fluid" style={{maxWidth: 800 + 'px'}}> <TravelTime /><Weather /></div>;
+    return <div className="container-fluid" style={{maxWidth: 800 + 'px'}}>
+              <div className="row">
+                <div className="col-xs-4">
+                  <Clock />
+                </div>
+                <div className="col-xs-4">
+                  <TravelTime /><Weather />
+                </div>
+              </div>
+            </div>;
   }
 };
 
