@@ -73,7 +73,7 @@ class TravelTime extends React.Component {
     }
 
     requestFinished(result, status) {
-      var txt = result.routes[0].legs[0].duration.text
+      var txt = result.routes[0].legs[0].duration_in_traffic.text
       var summary = result.routes[0].summary
 
       this.setState({duration: txt, route: summary})
